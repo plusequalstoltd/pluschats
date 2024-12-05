@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pluschats/components/custom_drawer.dart';
 import 'package:pluschats/components/custom_user_tile.dart';
+import 'package:pluschats/main.dart';
 import 'package:pluschats/pages/chat_page.dart';
 import 'package:pluschats/services/auth/auth_service.dart';
 import 'package:pluschats/services/chat/chat_service.dart';
@@ -14,7 +15,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logger.d(_authService.getCurrentUser());
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(
           'PlusChats',
@@ -33,7 +36,7 @@ class HomePage extends StatelessWidget {
 
   Widget _buildUserList() {
     return StreamBuilder(
-      stream: _chatService.getUsersStream(),
+      stream: _chatService.getUsersStreamExcludingBlocked(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -61,7 +64,7 @@ class HomePage extends StatelessWidget {
 
   Widget _buildUserListItem(
       Map<String, dynamic> userData, BuildContext context) {
-    if (userData['email'] != _authService.getCurrentUser()) {
+    if (userData['email'] != _authService.getCurrentUser()?.email) {
       return CustomUserTile(
         text: userData['email'],
         onTap: () {
@@ -69,6 +72,7 @@ class HomePage extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ChatPage(
+                receiverId: userData['uid'],
                 receiverEmail: userData['email'],
               ),
             ),

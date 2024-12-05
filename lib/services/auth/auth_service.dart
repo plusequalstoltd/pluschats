@@ -15,7 +15,7 @@ class AuthService {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
-      _firestore.collection('Users').doc(userCredential.user!.uid).set({
+      _firestore.collection('users').doc(userCredential.user!.uid).set({
         'email': email,
         'uid': userCredential.user!.uid,
       });
@@ -32,7 +32,7 @@ class AuthService {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      _firestore.collection('Users').doc(userCredential.user!.uid).set({
+      _firestore.collection('users').doc(userCredential.user!.uid).set({
         'email': email,
         'uid': userCredential.user!.uid,
       });
