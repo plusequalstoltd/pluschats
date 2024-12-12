@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pluschats/services/chat/chat_service.dart';
-import 'package:pluschats/themes/theme_provider.dart';
-import 'package:provider/provider.dart';
+// import 'package:pluschats/themes/theme_provider.dart';
+// import 'package:provider/provider.dart';
 
 class CustomChatBubble extends StatelessWidget {
   final String message;
@@ -215,8 +215,8 @@ class CustomChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode =
-        Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
+    // bool isDarkMode =
+    //     Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
     return GestureDetector(
       onLongPress: () {
         if (!currentUser) {
