@@ -21,10 +21,15 @@ OR
 
 ## ChatApp UI
 
-![App UI](simulator_screenshot_home_page.png)
-![App UI](simulator_screenshot_chat_page.png)
-![App UI](simulator_screenshot_settings_page_dark.png)
-![App UI](simulator_screenshot_settings_page_light.png)
+<div style="display: flex; justify-content: space-between;">
+  <img src="simulator_screenshot_home_page.png" width="48%" />
+  <img src="simulator_screenshot_chat_page.png" width="48%" />
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+  <img src="simulator_screenshot_settings_page_dark.png" width="48%" />
+  <img src="simulator_screenshot_settings_page_light.png" width="48%" />
+</div>
 
 ## TODO
 
