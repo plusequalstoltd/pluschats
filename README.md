@@ -19,6 +19,13 @@ OR
 *   Run the `configure` command, select a Firebase project and platform `flutterfire configure`
 *   Once configured, a firebase_options.dart file will be generated for you containing all the options required for initialization.
 
+## ChatApp UI
+
+![App UI](simulator_screenshot_home_page.png)
+![App UI](simulator_screenshot_chat_page.png)
+![App UI](simulator_screenshot_settings_page_dark.png)
+![App UI](simulator_screenshot_settings_page_light.png)
+
 ## TODO
 
 *   Integrate Video/Voice Calling.
