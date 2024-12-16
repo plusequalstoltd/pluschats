@@ -1,16 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pluschats/components/custom_chat_bubble.dart';
 import 'package:pluschats/components/custom_textfields.dart';
+import 'package:pluschats/features/auth/domain/entities/app_user.dart';
+import 'package:pluschats/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:pluschats/responsive/constrained_scaffold.dart';
-import 'package:pluschats/services/auth/auth_service.dart';
 import 'package:pluschats/services/chat/chat_service.dart';
 
 class ChatPage extends StatefulWidget {
   final String receiverId;
   final String receiverEmail;
-  ChatPage({super.key, required this.receiverId, required this.receiverEmail});
+  ChatPage({
+    super.key,
+    required this.receiverId,
+    required this.receiverEmail,
+  });
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -21,7 +27,9 @@ class _ChatPageState extends State<ChatPage> {
   final ScrollController _scrollController = ScrollController();
 
   final ChatService _chatService = ChatService();
-  final AuthService _authService = AuthService();
+  AppUser? currentUser;
+  String? senderId;
+  bool? isCurrentUser;
 
   FocusNode myFocusNode = FocusNode();
 
@@ -37,6 +45,7 @@ class _ChatPageState extends State<ChatPage> {
         );
       }
     });
+    getCurrentUser();
 
     // Ensure scrollDown() is called after the first frame is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -45,6 +54,12 @@ class _ChatPageState extends State<ChatPage> {
         () => scrollDown(),
       );
     });
+  }
+
+  void getCurrentUser() {
+    final authCubit = context.read<AuthCubit>();
+    currentUser = authCubit.currentUser;
+    senderId = currentUser!.uid;
   }
 
   @override
@@ -98,9 +113,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildMessagesList() {
-    String senderId = _authService.getCurrentUser()!.uid;
     return StreamBuilder(
-      stream: _chatService.getMessagesStream(widget.receiverId, senderId),
+      stream: _chatService.getMessagesStream(widget.receiverId, senderId!),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -129,16 +143,16 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildMessageItem(DocumentSnapshot doc, BuildContext context) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-    bool isCurrentUser = data['senderId'] == _authService.getCurrentUser()!.uid;
+    final authCubit = context.read<AuthCubit>();
+    isCurrentUser = data['senderId'] == authCubit.currentUser!.uid;
 
     var alignment =
-        isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
+        isCurrentUser == true ? Alignment.centerRight : Alignment.centerLeft;
     return Container(
       alignment: alignment,
       child: CustomChatBubble(
         message: data['message'],
-        currentUser: isCurrentUser,
+        currentUser: isCurrentUser ?? false,
         messageId: doc.id,
         userId: data['senderId'],
       ),

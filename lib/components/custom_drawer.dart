@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pluschats/services/auth/auth_service.dart';
-import 'package:pluschats/pages/settings_page.dart';
+import 'package:pluschats/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:pluschats/features/profile/presentation/pages/profile_page.dart';
+import 'package:pluschats/features/settings/presentation/settings_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
-
-  void logout() async {
-    final authService = AuthService();
-    await authService.signOut();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +60,16 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pop(context);
+                  final user = context.read<AuthCubit>().currentUser;
+                  String? uid = user!.uid;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfilePage(
+                        uid: uid,
+                      ),
+                    ),
+                  );
                 },
               ),
               ListTile(
@@ -105,7 +112,7 @@ class CustomDrawer extends StatelessWidget {
                 fontWeight: FontWeight.normal,
               ),
             ),
-            onTap: logout,
+            onTap: () => context.read<AuthCubit>().signOut(),
           ),
         ],
       ),

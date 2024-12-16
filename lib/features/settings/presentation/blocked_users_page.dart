@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pluschats/components/custom_user_tile.dart';
+import 'package:pluschats/features/auth/domain/entities/app_user.dart';
+import 'package:pluschats/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:pluschats/responsive/constrained_scaffold.dart';
-import 'package:pluschats/services/auth/auth_service.dart';
 import 'package:pluschats/services/chat/chat_service.dart';
 
-class BlockedUsersPage extends StatelessWidget {
-  BlockedUsersPage({super.key});
+class BlockedUsersPage extends StatefulWidget {
+  const BlockedUsersPage({super.key});
 
+  @override
+  State<BlockedUsersPage> createState() => _BlockedUsersPageState();
+}
+
+class _BlockedUsersPageState extends State<BlockedUsersPage> {
+  AppUser? currentUser;
+  String? userId;
   final ChatService _chatService = ChatService();
-  final AuthService _authService = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    final authCubit = context.read<AuthCubit>();
+    currentUser = authCubit.currentUser;
+    userId = currentUser!.uid;
+  }
 
   void _showUnblockBox(BuildContext context, String userId) {
     showDialog(
@@ -83,7 +103,6 @@ class BlockedUsersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String userId = _authService.getCurrentUser()!.uid;
     return ConstrainedScaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
@@ -121,7 +140,7 @@ class BlockedUsersPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final user = blockedUsers[index];
                 return CustomUserTile(
-                  text: user['email'],
+                  userData: user,
                   onTap: () => _showUnblockBox(context, user['uid']),
                 );
               },

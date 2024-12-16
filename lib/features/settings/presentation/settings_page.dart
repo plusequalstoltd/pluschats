@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pluschats/pages/blocked_users_page.dart';
+import 'package:pluschats/features/settings/presentation/blocked_users_page.dart';
 import 'package:pluschats/responsive/constrained_scaffold.dart';
-import 'package:pluschats/themes/theme_provider.dart';
+import 'package:pluschats/themes/theme_cubit.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -11,6 +11,9 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeCubit = context.watch<ThemeCubit>();
+
+    bool isDarkMode = themeCubit.isDarkMode;
     return ConstrainedScaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -46,11 +49,9 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
                 CupertinoSwitch(
-                  value: Provider.of<ThemeProvider>(context, listen: false)
-                      .isDarkMode,
+                  value: isDarkMode,
                   onChanged: (value) {
-                    Provider.of<ThemeProvider>(context, listen: false)
-                        .toggleTheme();
+                    themeCubit.toggleTheme();
                   },
                 ),
               ],
@@ -79,7 +80,7 @@ class SettingsPage extends StatelessWidget {
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BlockedUsersPage(),
+                      builder: (context) => const BlockedUsersPage(),
                     ),
                   ),
                   icon: Icon(

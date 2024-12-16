@@ -1,27 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pluschats/components/custom_drawer.dart';
 import 'package:pluschats/components/custom_user_tile.dart';
+import 'package:pluschats/features/auth/domain/entities/app_user.dart';
+import 'package:pluschats/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:pluschats/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:pluschats/main.dart';
-import 'package:pluschats/pages/chat_page.dart';
+import 'package:pluschats/features/chat/chat_page.dart';
 import 'package:pluschats/responsive/constrained_scaffold.dart';
-import 'package:pluschats/services/auth/auth_service.dart';
 import 'package:pluschats/services/chat/chat_service.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final ChatService _chatService = ChatService();
-  final AuthService _authService = AuthService();
+  Stream<List<Map<String, dynamic>>>? usersStream;
+
+  late final profileCubit = context.read<ProfileCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshData();
+  }
 
   Future<void> _refreshData() async {
     // Logic for refreshing data
-    _chatService.getUsersStreamExcludingBlocked();
+    usersStream = _chatService.getUsersStreamExcludingBlocked();
   }
 
   @override
   Widget build(BuildContext context) {
-    logger.d(_authService.getCurrentUser());
+    final authCubit =
+        context.watch<AuthCubit>(); // Watch for current user updates
+
     return ConstrainedScaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -36,13 +54,13 @@ class HomePage extends StatelessWidget {
         ),
       ),
       drawer: const CustomDrawer(),
-      body: _buildUserList(),
+      body: _buildUserList(authCubit.currentUser),
     );
   }
 
-  Widget _buildUserList() {
+  Widget _buildUserList(AppUser? currentUser) {
     return StreamBuilder(
-      stream: _chatService.getUsersStreamExcludingBlocked(),
+      stream: usersStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -53,8 +71,8 @@ class HomePage extends StatelessWidget {
             onRefresh: _refreshData,
             child: ListView(
               children: snapshot.data!
-                  .map<Widget>(
-                      (userData) => _buildUserListItem(userData, context))
+                  .map<Widget>((userData) =>
+                      _buildUserListItem(userData, context, currentUser))
                   .toList(),
             ),
           );
@@ -71,11 +89,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildUserListItem(
-      Map<String, dynamic> userData, BuildContext context) {
-    if (userData['email'] != _authService.getCurrentUser()?.email) {
+  Widget _buildUserListItem(Map<String, dynamic> userData, BuildContext context,
+      AppUser? currentUser) {
+    if (currentUser != null && userData['email'] != currentUser.email) {
+      logger.d(
+          'Receiver uid: ${userData['uid']}\nReceiver email: ${userData['email']}');
       return CustomUserTile(
-        text: userData['email'],
+        userData: userData,
         onTap: () {
           Navigator.push(
             context,

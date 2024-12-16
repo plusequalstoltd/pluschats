@@ -108,7 +108,7 @@ class ChatService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<List<Map<String, dynamic>>> getBlockedUsersStream(String userId) {
+  Stream<List<Map<String, dynamic>>> getBlockedUsersStream(String? userId) {
     // final currentUser = _auth.currentUser;
     return _firestore
         .collection('users')
