@@ -4,6 +4,7 @@ import 'package:pluschats/components/custom_drawer.dart';
 import 'package:pluschats/components/custom_user_tile.dart';
 import 'package:pluschats/main.dart';
 import 'package:pluschats/pages/chat_page.dart';
+import 'package:pluschats/responsive/constrained_scaffold.dart';
 import 'package:pluschats/services/auth/auth_service.dart';
 import 'package:pluschats/services/chat/chat_service.dart';
 
@@ -13,10 +14,15 @@ class HomePage extends StatelessWidget {
   final ChatService _chatService = ChatService();
   final AuthService _authService = AuthService();
 
+  Future<void> _refreshData() async {
+    // Logic for refreshing data
+    _chatService.getUsersStreamExcludingBlocked();
+  }
+
   @override
   Widget build(BuildContext context) {
     logger.d(_authService.getCurrentUser());
-    return Scaffold(
+    return ConstrainedScaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(
@@ -43,11 +49,14 @@ class HomePage extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasData) {
-          return ListView(
-            children: snapshot.data!
-                .map<Widget>(
-                    (userData) => _buildUserListItem(userData, context))
-                .toList(),
+          return RefreshIndicator(
+            onRefresh: _refreshData,
+            child: ListView(
+              children: snapshot.data!
+                  .map<Widget>(
+                      (userData) => _buildUserListItem(userData, context))
+                  .toList(),
+            ),
           );
         } else if (snapshot.hasError) {
           return const Center(

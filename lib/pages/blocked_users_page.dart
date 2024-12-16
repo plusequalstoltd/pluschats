@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pluschats/components/custom_user_tile.dart';
+import 'package:pluschats/responsive/constrained_scaffold.dart';
 import 'package:pluschats/services/auth/auth_service.dart';
 import 'package:pluschats/services/chat/chat_service.dart';
 
@@ -83,7 +84,7 @@ class BlockedUsersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String userId = _authService.getCurrentUser()!.uid;
-    return Scaffold(
+    return ConstrainedScaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           title: Text(

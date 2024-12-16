@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pluschats/pages/blocked_users_page.dart';
+import 'package:pluschats/responsive/constrained_scaffold.dart';
 import 'package:pluschats/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(

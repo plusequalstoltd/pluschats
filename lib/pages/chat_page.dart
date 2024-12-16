@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pluschats/components/custom_chat_bubble.dart';
 import 'package:pluschats/components/custom_textfields.dart';
+import 'package:pluschats/responsive/constrained_scaffold.dart';
 import 'package:pluschats/services/auth/auth_service.dart';
 import 'package:pluschats/services/chat/chat_service.dart';
 
@@ -69,7 +70,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(

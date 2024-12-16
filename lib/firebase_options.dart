@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -65,4 +56,34 @@ class DefaultFirebaseOptions {
     storageBucket: 'pluschats.firebasestorage.app',
     iosBundleId: 'com.plusequalsto.pluschats',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCkAqUrxUiVs2F_EVNtBDDiSaZthRIDDco',
+    appId: '1:846834471560:web:14c41297a2cdb6d655853d',
+    messagingSenderId: '846834471560',
+    projectId: 'pluschats',
+    authDomain: 'pluschats.firebaseapp.com',
+    storageBucket: 'pluschats.firebasestorage.app',
+    measurementId: 'G-692TXCK2BR',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyD8x6baYfxrapr015ajO_t08ltPF_LunxM',
+    appId: '1:846834471560:ios:615a4b5ff84c6aa255853d',
+    messagingSenderId: '846834471560',
+    projectId: 'pluschats',
+    storageBucket: 'pluschats.firebasestorage.app',
+    iosBundleId: 'com.plusequalsto.pluschats',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyCkAqUrxUiVs2F_EVNtBDDiSaZthRIDDco',
+    appId: '1:846834471560:web:d52e2a394b8f875e55853d',
+    messagingSenderId: '846834471560',
+    projectId: 'pluschats',
+    authDomain: 'pluschats.firebaseapp.com',
+    storageBucket: 'pluschats.firebasestorage.app',
+    measurementId: 'G-Y1QP2YPZEC',
+  );
+
 }
