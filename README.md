@@ -30,6 +30,7 @@ OR
 
 ## TODO
 
+*   Integrate Windows and MacOS support.
 *   Integrate Video/Voice Calling.
 *   Enable Group Chats.
 *   Enable Group Calls.
