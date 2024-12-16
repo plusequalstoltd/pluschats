@@ -38,10 +38,13 @@ class _ChatPageState extends State<ChatPage> {
       }
     });
 
-    Future.delayed(
-      const Duration(milliseconds: 250),
-      () => scrollDown(),
-    );
+    // Ensure scrollDown() is called after the first frame is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(
+        const Duration(milliseconds: 250),
+        () => scrollDown(),
+      );
+    });
   }
 
   @override
