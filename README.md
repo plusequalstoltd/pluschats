@@ -22,10 +22,10 @@ OR
 ## ChatApp UI
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="simulator_screenshot_home_page.png" width="24%" />
-  <img src="simulator_screenshot_chat_page.png" width="24%" />
-  <img src="simulator_screenshot_settings_page_dark.png" width="24%" />
-  <img src="simulator_screenshot_settings_page_light.png" width="24%" />
+  <img src="simulator_screenshot_home_page.png" width="20%" />
+  <img src="simulator_screenshot_chat_page.png" width="20%" />
+  <img src="simulator_screenshot_settings_page_dark.png" width="20%" />
+  <img src="simulator_screenshot_settings_page_light.png" width="20%" />
 </div>
 
 ## TODO
