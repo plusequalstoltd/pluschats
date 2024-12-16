@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pluschats/themes/dark_mode.dart';
 import 'package:pluschats/themes/light_mode.dart';

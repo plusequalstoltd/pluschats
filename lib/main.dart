@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pluschats/services/auth/auth_gate.dart';
-import 'package:pluschats/themes/light_mode.dart';
 import 'package:pluschats/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
